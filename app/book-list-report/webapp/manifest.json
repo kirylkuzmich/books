@@ -1,0 +1,156 @@
+{
+    "_version": "1.15.0",
+    "sap.app": {
+		"id": "my.bookshop.book-list-report",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{APP_TITLE}}",
+        "description": "{{APP_DESCRIPTION}}",
+        "ach": "CA-UI5-FE",
+        "dataSources": {
+            "mainService": {
+                "uri": "odata/v4/my.bookshop.CatalogService/",
+                "type": "OData",
+                "settings": {
+                    "odataVersion": "4.0"
+                }
+            }
+        },
+        "offline": false,
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "ui5template.fiorielements.v4.lrop",
+            "version": "1.0.0"
+        },
+		"crossNavigation": {
+			"inbounds": {
+				"intent1": {
+					"signature": {
+						"parameters": {},
+						"additionalParameters": "allowed"
+					},
+					"semanticObject": "BooksListReport",
+					"action": "Display",
+					"title": "{{APP_TITLE}}",
+					"icon": "sap-icon://sap-box",
+					"indicatorDataSource": {
+						"dataSource": "mainService",
+						"path": "Books/$count?$filter=IsActiveEntity%20eq%20false%20or%20SiblingEntity/IsActiveEntity%20eq%20null",
+						"refresh": 600
+					}
+				}
+			},
+			"outbounds": {
+			}
+		}
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "resources": {
+            "js": [],
+            "css": []
+        },
+        "dependencies": {
+            "minUI5Version": "1.60.1",
+            "libs": {
+                "sap.fe.templates": {}
+            }
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            },
+            "": {
+                "dataSource": "mainService",
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            }
+        },
+
+        "routing": {
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "BooksList",
+                    "target": "BooksList"
+                },
+                {
+                    "pattern": "Books({key}):?query:",
+                    "name": "BooksObjectPage",
+                    "target": "BooksObjectPage"
+                }
+            ],
+            "targets": {
+                "BooksList": {
+                    "type": "Component",
+                    "id": "BooksList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings" : {
+                            "entitySet" : "Books",
+                            "variantManagement": "Page",
+                            "initialLoad": true,
+                            "navigation" : {
+                                "Books" : {
+                                    "detail" : {
+                                        "route" : "BooksObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "BooksObjectPage": {
+                    "type": "Component",
+                    "id":  "BooksObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings" : {
+                            "entitySet" : "Books"
+                        }
+                    }
+                }
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        }
+    },
+    "sap.platform.abap": {
+        "_version": "1.1.0",
+        "uri": ""
+    },
+    "sap.platform.hcp": {
+        "_version": "1.1.0",
+        "uri": ""
+    },
+    "sap.fiori": {
+        "_version": "1.1.0",
+        "registrationIds": [],
+        "archeType": "transactional"
+    }
+}
